@@ -1,7 +1,23 @@
-// import user from './user';
-// import wallet from './wallet';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from '@redux-devtools/extension';
+import userReducer from './user';
+import walletReducer from './wallet';
 
-// Configure os seus reducers.
-// ATENÇÃO: você obrigatoriamente tem que utilizar as chaves "user" e "wallet" no seu estado global
+const rootReducer = combineReducers({
+  user: userReducer,
+  wallet: walletReducer,
+});
 
-export default () => {}; // delete essa linha e configure os seus reducers
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(
+    applyMiddleware(thunk),
+  ),
+);
+
+if (window.Cypress) {
+  window.store = store;
+}
+
+export default store;
