@@ -15,7 +15,7 @@ export interface Expense {
 export interface RootState {
   user: UserState;
   wallet: {
-    currencies: any;
+    currencies: [];
     expenses: Expense[];
   };
 }
@@ -35,7 +35,7 @@ export interface ExchangeRateInfo {
 }
 
 export interface WalletState {
-  currencies: string[];
+  currencies: [];
   expenses: Expense[];
   editor: boolean;
   idToEdit: number;
