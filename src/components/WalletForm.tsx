@@ -1,10 +1,9 @@
 import React, { Component, ChangeEvent, FormEvent } from 'react';
 import { connect } from 'react-redux';
-import { addExpense as addExpenseAction, fetchAPI } from '../redux/actions';
+import { addExpense as addExpenseAction, fetchAPIAndExchange } from '../redux/actions';
 
 interface WalletFormProps {
   addExpense: (expenseData: {
-    id: number;
     description: string;
     value: number;
     currency: string;
@@ -13,6 +12,7 @@ interface WalletFormProps {
     exchangeRates: Record<string, any>;
   }) => void;
   expenses: any[];
+  fetchCurrencies: () => Promise<void>;
 }
 
 interface WalletFormState {
@@ -38,7 +38,9 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
   }
 
   async componentDidMount() {
-    this.props.fetchCurrencies();
+    const { fetchCurrencies } = this.props;
+    fetchCurrencies();
+
     await this.fetchExchangeRates(); // Chama a função para buscar os dados da API
   }
 
@@ -52,6 +54,7 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
 
   handleAddExpense = async (e: FormEvent) => {
     e.preventDefault();
+    const { addExpense } = this.props; // Desestruture as props aqui
 
     const { currency } = this.state;
     const { description, value, method, tag } = this.state;
@@ -59,7 +62,7 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
     // Você deve fazer a requisição à API aqui para obter a cotação atual
     const response = await fetch('https://economia.awesomeapi.com.br/json/all');
     const data = await response.json();
-    const exchangeRate = data[currency]?.ask || 1; // Valor padrão é 1 se a moeda não for encontrada
+    const exchangeRates = data[currency]?.ask || 1; // Valor padrão é 1 se a moeda não for encontrada
 
     // Calcula o próximo ID com base nas despesas existentes
     const getNextId = () => {
@@ -68,15 +71,23 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
       return expenses[expenses.length - 1].id + 1;
     };
 
-    // Chama a ação Redux para adicionar a despesa
-    this.props.addExpense({
-      id: getNextId(),
+    console.log('Despesa adicionada:', {
       description,
       value: parseFloat(value),
       currency,
       method,
       tag,
-      exchangeRate,
+      exchangeRates,
+    });
+
+    // Chama a ação Redux para adicionar a despesa
+    addExpense({
+      description,
+      value: parseFloat(value),
+      currency,
+      method,
+      tag,
+      exchangeRates,
     });
 
     // Limpe os campos do formulário
@@ -191,10 +202,10 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     async addExpense(data: any) {
-      return await dispatch(addExpenseAction(data));
+      return dispatch(addExpenseAction(data));
     },
     async fetchCurrencies() {
-      const result = await dispatch(fetchAPI());
+      const result = await dispatch(fetchAPIAndExchange());
       return result;
     },
   };

@@ -63,14 +63,6 @@ export const deleteItem = (expenses: any) => ({
   payload: expenses,
 });
 
-// Ação para salvar as despesas no estado
-export const saveExpenses = (expense: any, prices: any) => ({
-  type: ActionTypes.SAVE_EXPENSES,
-  payload: expense,
-  prices,
-});
-
-// Ação para atualizar o total das despesas
 export const updateTotalExpenses = () => ({
   type: ActionTypes.UPDATE_TOTAL_EXPENSES,
 });
@@ -88,19 +80,9 @@ export const editExpense = (id: any) => ({
 });
 
 // Ação assíncrona para buscar as taxas de câmbio da API e atualizar as moedas
-export const fetchExchange = (expense: any) => async (dispatch: any) => {
-  try {
-    const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const data = await response.json();
-    delete data.USDT;
-    dispatch(loadExpenses(expense, [data]));
-  } catch (error) {
-    console.error('Failed to fetch exchange rates', error);
-  }
-};
-
-// Ação assíncrona para buscar as moedas da API e atualizar o estado com elas
-export const fetchAPI = () => async (dispatch: Dispatch<AnyAction>) => {
+export const fetchAPIAndExchange = (expense?: any) => async (
+  dispatch: Dispatch<AnyAction>,
+) => {
   try {
     const request = await fetch('https://economia.awesomeapi.com.br/json/all');
     const response = await request.json();
@@ -109,8 +91,13 @@ export const fetchAPI = () => async (dispatch: Dispatch<AnyAction>) => {
     if (index > -1) {
       currenciesArray.splice(index, 1);
     }
+
     dispatch(saveCurrencies(currenciesArray));
+
+    if (expense) {
+      dispatch(loadExpenses(expense, [response]));
+    }
   } catch (error) {
-    console.error('Failed to fetch currencies', error);
+    console.error('Failed to fetch data', error);
   }
 };
