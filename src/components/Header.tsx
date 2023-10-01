@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 interface Expense {
@@ -18,10 +18,13 @@ function Header() {
   const userEmail = useSelector((state: RootState) => state.user.email);
   const expenses = useSelector((state: RootState) => state.wallet.expenses);
 
-  const totalExpense = expenses.reduce((
-    acc: number,
-    expense: Expense,
-  ) => acc + expense.value, 0);
+  const totalExpenseValue = useMemo(() => {
+    return expenses.reduce((acc: number, expense: Expense) => acc + expense.value, 0);
+  }, [expenses]);
+
+  // Certifique-se de que totalExpenseValue seja sempre um número antes de chamar toFixed
+  const totalExpense = Number.isNaN(totalExpenseValue)
+    ? '0.00' : totalExpenseValue.toFixed(2);
 
   return (
     <header>
