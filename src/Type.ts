@@ -1,8 +1,8 @@
-export interface UserState {
+export type UserState = {
   email: string;
-}
+};
 
-export interface Expense {
+export type Expense = {
   id: number;
   value: string;
   description: string;
@@ -10,41 +10,40 @@ export interface Expense {
   method: string;
   tag: string;
   exchangeRates: Record<string, ExchangeRateInfo>;
-}
+};
 
-export interface RootState {
+export type RootState = {
   user: UserState;
   wallet: {
     currencies: [];
     expenses: Expense[];
   };
-}
+};
 
 export type GlobalState = {
   user: UserState;
   wallet: WalletState;
 };
 
-// types.ts
 
-export interface ExchangeRateInfo {
+export type ExchangeRateInfo = {
   code: string;
   name: string;
   bid: number;
   // outras propriedades relevantes
-}
+};
 
-export interface WalletState {
+export type WalletState = {
   currencies: [];
   expenses: Expense[];
   editor: boolean;
   idToEdit: number;
   // Adicione as propriedades que faltam
-}
+};
 
-export interface Currency {
+export type Currency = {
   code: string;
   name: string;
   ask: string;
   [key: string]: any; // para cobrir as outras propriedades que não foram listadas
-}
+};
