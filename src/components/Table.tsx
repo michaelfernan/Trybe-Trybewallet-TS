@@ -2,14 +2,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteItem, updateTotalExpense } from '../redux/actions';
 import { RootState } from '../Type';
 
-// Adjust the path accordingly
 function ExpenseTable() {
   const expenses = useSelector((state: RootState) => state.wallet.expenses);
   const dispatch = useDispatch();
 
   const handleDelete = (id: number, convertedValue: number) => {
-    dispatch(deleteItem(id)); // Deleta a despesa
-    dispatch(updateTotalExpense(convertedValue)); // Atualiza o total de despesas
+    dispatch(deleteItem(id));
+    dispatch(updateTotalExpense(convertedValue));
   };
 
   return (

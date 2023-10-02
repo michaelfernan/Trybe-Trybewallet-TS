@@ -1,32 +1,27 @@
 import { Dispatch, AnyAction } from 'redux';
 
-export enum ActionTypes {
-  ADD_CURRENCIES = 'ADD_CURRENCIES',
-  ADD_EXPENSE = 'ADD_EXPENSE',
-  SET_USER_EMAIL = 'SET_USER_EMAIL',
-  USER_EMAIL = 'USER_EMAIL',
-  SAVE_CURRENCIES = 'SAVE_CURRENCIES',
-  SAVE_EXPENSES = 'SAVE_EXPENSES',
-  DELETE_EXPENSES = 'DELETE_EXPENSES',
-  EDIT_EXPENSE = 'EDIT_EXPENSE',
-  SAVE_EDITED_EXPENSE = 'SAVE_EDITED_EXPENSE',
-  UPDATE_TOTAL_EXPENSES = 'UPDATE_TOTAL_EXPENSES',
-  UPDATE_TOTAL_EXPENSE = 'UPDATE_TOTAL_EXPENSE',
-}
+export const ADD_CURRENCIES = 'ADD_CURRENCIES';
+export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const SET_USER_EMAIL = 'SET_USER_EMAIL';
+export const USER_EMAIL = 'USER_EMAIL';
+export const SAVE_CURRENCIES = 'SAVE_CURRENCIES';
+export const SAVE_EXPENSES = 'SAVE_EXPENSES';
+export const DELETE_EXPENSES = 'DELETE_EXPENSES';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const SAVE_EDITED_EXPENSE = 'SAVE_EDITED_EXPENSE';
+export const UPDATE_TOTAL_EXPENSES = 'UPDATE_TOTAL_EXPENSES';
+export const UPDATE_TOTAL_EXPENSE = 'UPDATE_TOTAL_EXPENSE';
 
-// Ação para definir o e-mail do usuário
 export const setUserEmail = (email: string) => ({
-  type: ActionTypes.SET_USER_EMAIL,
+  type: SET_USER_EMAIL,
   payload: email,
 });
 
-// Ação para adicionar as moedas disponíveis no estado
 export const addCurrencies = (currencies: string[]) => ({
-  type: ActionTypes.ADD_CURRENCIES,
+  type: ADD_CURRENCIES,
   payload: currencies,
 });
 
-// Ação para adicionar uma despesa
 export const addExpense = (expenseData: {
   description: string;
   value: number;
@@ -35,56 +30,50 @@ export const addExpense = (expenseData: {
   tag: string;
   exchangeRate: number;
 }) => ({
-  type: ActionTypes.ADD_EXPENSE,
+  type: ADD_EXPENSE,
   payload: expenseData,
 });
 
-// Ação para salvar o e-mail do usuário
 export const saveUserEmail = (email: string) => ({
-  type: ActionTypes.USER_EMAIL,
+  type: USER_EMAIL,
   payload: email,
 });
 
-// Ação para salvar as moedas no estado
 export const saveCurrencies = (currencies: string[]) => ({
-  type: ActionTypes.SAVE_CURRENCIES,
+  type: SAVE_CURRENCIES,
   payload: currencies,
 });
 
-// Ação para carregar as despesas no estado
 export const loadExpenses = (expense: any, prices: any) => ({
-  type: ActionTypes.SAVE_EXPENSES,
+  type: SAVE_EXPENSES,
   payload: expense,
   prices,
 });
 
 export const deleteItem = (id: number) => ({
-  type: ActionTypes.DELETE_EXPENSES,
+  type: DELETE_EXPENSES,
   payload: id,
 });
 
 export const updateTotalExpenses = () => ({
-  type: ActionTypes.UPDATE_TOTAL_EXPENSES,
+  type: UPDATE_TOTAL_EXPENSES,
 });
 
-// Ação para salvar uma despesa editada
 export const saveEditedExpense = (expense: any) => ({
-  type: ActionTypes.SAVE_EDITED_EXPENSE,
+  type: SAVE_EDITED_EXPENSE,
   payload: expense,
 });
 
-// Ação para editar uma despesa
 export const editExpense = (id: any) => ({
-  type: ActionTypes.EDIT_EXPENSE,
+  type: EDIT_EXPENSE,
   payload: id,
 });
-// actions.js
+
 export const updateTotalExpense = (totalExpense:any) => ({
   type: 'UPDATE_TOTAL_EXPENSE',
   payload: totalExpense,
 });
 
-// Ação assíncrona para buscar as taxas de câmbio da API e atualizar as moedas
 export const fetchAPIAndExchange = (expense?: any) => async (
   dispatch: Dispatch<AnyAction>,
 ) => {

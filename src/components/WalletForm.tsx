@@ -41,7 +41,7 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
     const { fetchCurrencies } = this.props;
     fetchCurrencies();
 
-    await this.fetchExchangeRates(); // Chama a função para buscar os dados da API
+    await this.fetchExchangeRates();
   }
 
   handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -54,17 +54,14 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
 
   handleAddExpense = async (e: FormEvent) => {
     e.preventDefault();
-    const { addExpense } = this.props; // Desestruture as props aqui
+    const { addExpense } = this.props;
 
     const { currency } = this.state;
     const { description, value, method, tag } = this.state;
 
-    // Você deve fazer a requisição à API aqui para obter a cotação atual
     const response = await fetch('https://economia.awesomeapi.com.br/json/all');
     const data = await response.json();
-    const exchangeRates = data[currency]?.ask || 1; // Valor padrão é 1 se a moeda não for encontrada
-
-    // Calcula o próximo ID com base nas despesas existentes
+    const exchangeRates = data[currency]?.ask || 1;
 
     console.log('Despesa adicionada:', {
       description,
@@ -75,7 +72,6 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
       exchangeRates,
     });
 
-    // Chama a ação Redux para adicionar a despesa
     addExpense({
       description,
       value: parseFloat(value),
@@ -85,7 +81,6 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
       exchangeRates,
     });
 
-    // Limpe os campos do formulário
     this.setState({
       description: '',
       value: '',
@@ -100,7 +95,6 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
       }
       const data = await response.json();
 
-      // Atualize o estado availableCurrencies com os dados da API
       this.setState({
         availableCurrencies: Object.keys(data).filter((c) => c !== 'USDT'),
       });

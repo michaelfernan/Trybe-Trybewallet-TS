@@ -1,4 +1,10 @@
-import { ActionTypes } from '../actions';
+import {
+  SAVE_CURRENCIES,
+  ADD_EXPENSE,
+  DELETE_EXPENSES,
+  SAVE_EDITED_EXPENSE,
+  UPDATE_TOTAL_EXPENSE,
+} from '../actions';
 
 interface Expense {
   id: number;
@@ -27,20 +33,22 @@ const initialState: WalletState = {
 };
 
 type Action =
-  | { type: ActionTypes.SAVE_CURRENCIES; payload: string[] }
-  | { type: ActionTypes.ADD_EXPENSE; payload: Omit<Expense, 'id'> }
-  | { type: ActionTypes.DELETE_EXPENSES; payload: number }
-  | { type: ActionTypes.SAVE_EDITED_EXPENSE; payload: Expense }
-  | { type: ActionTypes.UPDATE_TOTAL_EXPENSE, payload: number };
+| { type: typeof SAVE_CURRENCIES; payload: string[] }
+| { type: typeof ADD_EXPENSE; payload: Omit<Expense, 'id'> }
+| { type: typeof DELETE_EXPENSES; payload: number }
+| { type: typeof SAVE_EDITED_EXPENSE; payload: Expense }
+| { type: typeof UPDATE_TOTAL_EXPENSE; payload: number };
 
 function handleSaveCurrencies(state: WalletState, action: {
-  type: ActionTypes.SAVE_CURRENCIES; payload: string[] }): WalletState {
+  type: typeof SAVE_CURRENCIES; payload: string[] }): WalletState {
   return {
     ...state,
     currencies: action.payload,
   };
-} function handleAddExpense(state: WalletState, action: {
-  type: ActionTypes.ADD_EXPENSE; payload: Omit<Expense, 'id'> }): WalletState {
+}
+
+function handleAddExpense(state: WalletState, action: {
+  type: typeof ADD_EXPENSE; payload: Omit<Expense, 'id'> }): WalletState {
   console.log('oii bebeee me pede pra fazerrr');
   console.log(action.payload);
 
@@ -60,36 +68,27 @@ function handleSaveCurrencies(state: WalletState, action: {
   };
 }
 
-// Similar helper functions for other cases can be created
-
 function walletReducer(state = initialState, action: Action): WalletState {
   switch (action.type) {
-    case ActionTypes.SAVE_CURRENCIES:
+    case SAVE_CURRENCIES:
       return handleSaveCurrencies(state, action);
-    case ActionTypes.ADD_EXPENSE:
+    case ADD_EXPENSE:
       return handleAddExpense(state, action);
-
-    case ActionTypes.UPDATE_TOTAL_EXPENSE: {
+    case UPDATE_TOTAL_EXPENSE:
       return {
         ...state,
         totalExpenses: state.totalExpenses - action.payload,
       };
-    }
-
-    case ActionTypes.DELETE_EXPENSES: {
+    case DELETE_EXPENSES: {
       const newExpenses = state.expenses.filter(
         (expense) => expense.id !== action.payload,
       );
       return {
         ...state,
         expenses: newExpenses,
-        // Subtrair o valor da despesa excluída do totalExpenses
         totalExpenses: state.totalExpenses,
       };
     }
-
-    // For the rest of the cases, either implement them similarly
-    // or keep them inside the main reducer if they are short.
     default:
       return state;
   }

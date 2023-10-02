@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { ActionTypes } from '../actions';
+import { SET_USER_EMAIL } from '../actions';
 
 const initialState = {
   email: '',
@@ -7,7 +7,7 @@ const initialState = {
 
 const userReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case ActionTypes.SET_USER_EMAIL:
+    case SET_USER_EMAIL:
       return { ...state, email: action.payload };
     default:
       return state;
