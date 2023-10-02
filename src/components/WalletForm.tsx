@@ -108,7 +108,6 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
 
     return (
       <div>
-        <h2>Adicionar Despesa</h2>
         <form onSubmit={ this.handleAddExpense }>
           <label>
             Descrição:
