@@ -22,25 +22,20 @@ function ExpenseTable() {
       </thead>
       <tbody>
         {expenses.map((expense) => {
-          const currentExchangeRate = expense.exchangeRates[expense.currency]?.bid || 1;
-
           return (
             <tr key={ expense.id }>
               <td>{expense.description}</td>
               <td>{expense.tag}</td>
               <td>{expense.method}</td>
-              <td>{parseFloat(expense.value).toFixed(2)}</td>
+              <td>{`${expense.value} ${expense.currency}`}</td>
+              <td>Real Brasileiro</td>
+              <td>{`${expense.exchangeRates} BRL`}</td>
               <td>
-                {expense.exchangeRates[expense.currency]?.name || expense.currency}
-                /Real Brasileiro
+                {`${(
+                  Number(expense.exchangeRates) * Number(expense.value)).toFixed(2)} BRL`}
+
               </td>
-              <td>
-                {typeof currentExchangeRate === 'number'
-                  ? currentExchangeRate.toFixed(2) : ''}
-              </td>
-              <td>
-                {(parseFloat(expense.value) * currentExchangeRate).toFixed(2)}
-              </td>
+
               <td>Real</td>
               <td>
                 <button>Editar</button>

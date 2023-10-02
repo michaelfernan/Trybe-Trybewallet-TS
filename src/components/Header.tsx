@@ -1,35 +1,25 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-
-interface Expense {
-  value: number;
-}
+import { Expense } from '../Type';
 
 interface RootState {
   user: {
     email: string;
   };
   wallet: {
+    totalExpenses: number; // Adicione o campo totalExpenses ao estado
     expenses: Expense[];
   };
 }
 
 function Header() {
   const userEmail = useSelector((state: RootState) => state.user.email);
-  const expenses = useSelector((state: RootState) => state.wallet.expenses);
-
-  const totalExpenseValue = useMemo(() => {
-    return expenses.reduce((acc: number, expense: Expense) => acc + expense.value, 0);
-  }, [expenses]);
-
-  // Certifique-se de que totalExpenseValue seja sempre um número antes de chamar toFixed
-  const totalExpense = Number.isNaN(totalExpenseValue)
-    ? '0.00' : totalExpenseValue.toFixed(2);
+  const totalExpenses = useSelector((state: RootState) => state.wallet.totalExpenses);
 
   return (
     <header>
       <span data-testid="email-field">{userEmail}</span>
-      <span data-testid="total-field">{totalExpense}</span>
+      <span data-testid="total-field">{totalExpenses.toFixed(2)}</span>
       <span data-testid="header-currency-field">BRL</span>
     </header>
   );

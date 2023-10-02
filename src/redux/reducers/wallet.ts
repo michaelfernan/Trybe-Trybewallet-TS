@@ -7,7 +7,7 @@ interface Expense {
   currency: string;
   method: string;
   tag: string;
-  exchangeRate: number;
+  exchangeRates:number;
 }
 
 interface WalletState {
@@ -15,7 +15,7 @@ interface WalletState {
   totalExpenses: number;
   currencies: string[];
   lastId: number;
-  totalExpense: number,
+  exchangeRates:number;
 }
 
 const initialState: WalletState = {
@@ -23,7 +23,7 @@ const initialState: WalletState = {
   totalExpenses: 0,
   currencies: [],
   lastId: 0,
-  totalExpense: 0,
+  exchangeRates: 0,
 };
 
 type Action =
@@ -39,8 +39,7 @@ function handleSaveCurrencies(state: WalletState, action: {
     ...state,
     currencies: action.payload,
   };
-}
-function handleAddExpense(state: WalletState, action: {
+} function handleAddExpense(state: WalletState, action: {
   type: ActionTypes.ADD_EXPENSE; payload: Omit<Expense, 'id'> }): WalletState {
   console.log('oii bebeee me pede pra fazerrr');
   console.log(action.payload);
@@ -48,20 +47,15 @@ function handleAddExpense(state: WalletState, action: {
   const newExpense: Expense = {
     id: state.lastId + 1,
     ...action.payload,
-    exchangeRate: action.payload.value * action.payload.exchangeRate, // Correto
-
+    exchangeRates: action.payload.exchangeRates, // Apenas a taxa de câmbio
   };
 
-  console.log({
-    expenses: [...state.expenses, newExpense],
-    totalExpenses: state.totalExpenses + newExpense.value * newExpense.exchangeRate,
-    lastId: state.lastId + 1,
-  });
+  const convertedValue = action.payload.value * action.payload.exchangeRates; // Valor convertido
 
   return {
     ...state,
     expenses: [...state.expenses, newExpense],
-    totalExpenses: state.totalExpenses + newExpense.value * newExpense.exchangeRate,
+    totalExpenses: state.totalExpenses + convertedValue,
     lastId: state.lastId + 1,
   };
 }
@@ -78,7 +72,7 @@ function walletReducer(state = initialState, action: Action): WalletState {
     case ActionTypes.UPDATE_TOTAL_EXPENSE: {
       return {
         ...state,
-        totalExpense: action.payload, // Atualize o totalExpense com o novo valor
+        totalExpenses: action.payload, // Atualize o totalExpense com o novo valor
       };
     }
     // For the rest of the cases, either implement them similarly

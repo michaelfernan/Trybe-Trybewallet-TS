@@ -11,7 +11,7 @@ interface WalletFormProps {
     tag: string;
     exchangeRates: Record<string, any>;
   }) => void;
-  expenses: any[];
+
   fetchCurrencies: () => Promise<void>;
 }
 
@@ -65,11 +65,6 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
     const exchangeRates = data[currency]?.ask || 1; // Valor padrão é 1 se a moeda não for encontrada
 
     // Calcula o próximo ID com base nas despesas existentes
-    const getNextId = () => {
-      const { expenses } = this.props;
-      if (!expenses || expenses.length === 0) return 0;
-      return expenses[expenses.length - 1].id + 1;
-    };
 
     console.log('Despesa adicionada:', {
       description,
