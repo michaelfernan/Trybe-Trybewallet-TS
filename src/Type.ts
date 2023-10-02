@@ -17,6 +17,7 @@ export type RootState = {
     email: string;
   };
   wallet: {
+    totalExpenses: any;
     expenses: Expense[];
   };
   totalExpense: 0;

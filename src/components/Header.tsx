@@ -1,16 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Expense } from '../Type';
-
-interface RootState {
-  user: {
-    email: string;
-  };
-  wallet: {
-    totalExpenses: number; // Adicione o campo totalExpenses ao estado
-    expenses: Expense[];
-  };
-}
+import { RootState } from '../Type';
 
 function Header() {
   const userEmail = useSelector((state: RootState) => state.user.email);
