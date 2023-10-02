@@ -11,6 +11,7 @@ export enum ActionTypes {
   EDIT_EXPENSE = 'EDIT_EXPENSE',
   SAVE_EDITED_EXPENSE = 'SAVE_EDITED_EXPENSE',
   UPDATE_TOTAL_EXPENSES = 'UPDATE_TOTAL_EXPENSES',
+  UPDATE_TOTAL_EXPENSE = 'UPDATE_TOTAL_EXPENSE',
 }
 
 // Ação para definir o e-mail do usuário
@@ -77,6 +78,11 @@ export const saveEditedExpense = (expense: any) => ({
 export const editExpense = (id: any) => ({
   type: ActionTypes.EDIT_EXPENSE,
   payload: id,
+});
+// actions.js
+export const updateTotalExpense = (totalExpense:any) => ({
+  type: 'UPDATE_TOTAL_EXPENSE',
+  payload: totalExpense,
 });
 
 // Ação assíncrona para buscar as taxas de câmbio da API e atualizar as moedas

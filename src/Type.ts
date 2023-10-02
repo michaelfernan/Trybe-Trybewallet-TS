@@ -13,11 +13,14 @@ export type Expense = {
 };
 
 export type RootState = {
-  user: UserState;
+  user: {
+    email: string;
+  };
   wallet: {
-    currencies: [];
     expenses: Expense[];
   };
+  totalExpense: 0;
+
 };
 
 export type GlobalState = {
@@ -25,8 +28,8 @@ export type GlobalState = {
   wallet: WalletState;
 };
 
-
 export type ExchangeRateInfo = {
+  ask: number;
   code: string;
   name: string;
   bid: number;
