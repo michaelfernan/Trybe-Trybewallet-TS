@@ -15,6 +15,7 @@ interface WalletState {
   totalExpenses: number;
   currencies: string[];
   lastId: number;
+  totalExpense: number,
 }
 
 const initialState: WalletState = {
@@ -22,14 +23,15 @@ const initialState: WalletState = {
   totalExpenses: 0,
   currencies: [],
   lastId: 0,
+  totalExpense: 0,
 };
 
 type Action =
   | { type: ActionTypes.SAVE_CURRENCIES; payload: string[] }
   | { type: ActionTypes.ADD_EXPENSE; payload: Omit<Expense, 'id'> }
-  | { type: ActionTypes.UPDATE_TOTAL_EXPENSES; payload: number }
   | { type: ActionTypes.DELETE_EXPENSES; payload: number }
-  | { type: ActionTypes.SAVE_EDITED_EXPENSE; payload: Expense };
+  | { type: ActionTypes.SAVE_EDITED_EXPENSE; payload: Expense }
+  | { type: ActionTypes.UPDATE_TOTAL_EXPENSE, payload: number };
 
 function handleSaveCurrencies(state: WalletState, action: {
   type: ActionTypes.SAVE_CURRENCIES; payload: string[] }): WalletState {
@@ -38,7 +40,6 @@ function handleSaveCurrencies(state: WalletState, action: {
     currencies: action.payload,
   };
 }
-
 function handleAddExpense(state: WalletState, action: {
   type: ActionTypes.ADD_EXPENSE; payload: Omit<Expense, 'id'> }): WalletState {
   console.log('oii bebeee me pede pra fazerrr');
@@ -47,7 +48,8 @@ function handleAddExpense(state: WalletState, action: {
   const newExpense: Expense = {
     id: state.lastId + 1,
     ...action.payload,
-    exchangeRate: action.payload.exchangeRate,
+    exchangeRate: action.payload.value * action.payload.exchangeRate, // Correto
+
   };
 
   console.log({
@@ -60,7 +62,7 @@ function handleAddExpense(state: WalletState, action: {
     ...state,
     expenses: [...state.expenses, newExpense],
     totalExpenses: state.totalExpenses + newExpense.value * newExpense.exchangeRate,
-    lastId: state.lastId + 1, // Corrigido aqui
+    lastId: state.lastId + 1,
   };
 }
 
@@ -72,6 +74,13 @@ function walletReducer(state = initialState, action: Action): WalletState {
       return handleSaveCurrencies(state, action);
     case ActionTypes.ADD_EXPENSE:
       return handleAddExpense(state, action);
+
+    case ActionTypes.UPDATE_TOTAL_EXPENSE: {
+      return {
+        ...state,
+        totalExpense: action.payload, // Atualize o totalExpense com o novo valor
+      };
+    }
     // For the rest of the cases, either implement them similarly
     // or keep them inside the main reducer if they are short.
     default:
