@@ -58,10 +58,9 @@ export const loadExpenses = (expense: any, prices: any) => ({
   prices,
 });
 
-// Ação para deletar uma despesa
-export const deleteItem = (expenses: any) => ({
+export const deleteItem = (id: number) => ({
   type: ActionTypes.DELETE_EXPENSES,
-  payload: expenses,
+  payload: id,
 });
 
 export const updateTotalExpenses = () => ({

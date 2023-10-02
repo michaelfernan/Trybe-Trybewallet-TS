@@ -1,9 +1,16 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteItem, updateTotalExpense } from '../redux/actions';
 import { RootState } from '../Type';
 
+// Adjust the path accordingly
 function ExpenseTable() {
   const expenses = useSelector((state: RootState) => state.wallet.expenses);
+  const dispatch = useDispatch();
+
+  const handleDelete = (id: number, convertedValue: number) => {
+    dispatch(deleteItem(id)); // Deleta a despesa
+    dispatch(updateTotalExpense(convertedValue)); // Atualiza o total de despesas
+  };
 
   return (
     <table>
@@ -33,14 +40,23 @@ function ExpenseTable() {
               <td>
                 {`${(
                   Number(expense.exchangeRates) * Number(expense.value)).toFixed(2)} BRL`}
-
               </td>
-
               <td>Real</td>
               <td>
                 <button>Editar</button>
-                <button>Excluir</button>
+                <button
+                  data-testid="delete-btn"
+                  onClick={ () => {
+                    handleDelete(
+                      expense.id,
+                      Number(expense.exchangeRates) * Number(expense.value),
+                    );
+                  } }
+                >
+                  Excluir
+                </button>
               </td>
+
             </tr>
           );
         })}

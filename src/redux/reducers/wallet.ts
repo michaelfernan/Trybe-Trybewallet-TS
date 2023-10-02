@@ -72,9 +72,22 @@ function walletReducer(state = initialState, action: Action): WalletState {
     case ActionTypes.UPDATE_TOTAL_EXPENSE: {
       return {
         ...state,
-        totalExpenses: action.payload, // Atualize o totalExpense com o novo valor
+        totalExpenses: state.totalExpenses - action.payload,
       };
     }
+
+    case ActionTypes.DELETE_EXPENSES: {
+      const newExpenses = state.expenses.filter(
+        (expense) => expense.id !== action.payload,
+      );
+      return {
+        ...state,
+        expenses: newExpenses,
+        // Subtrair o valor da despesa excluída do totalExpenses
+        totalExpenses: state.totalExpenses,
+      };
+    }
+
     // For the rest of the cases, either implement them similarly
     // or keep them inside the main reducer if they are short.
     default:
