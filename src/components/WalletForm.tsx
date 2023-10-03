@@ -13,7 +13,7 @@ function WalletForm() {
     availableCurrencies: [],
   });
 
-  const currencies = useSelector((state: any) => state.wallet.currencies);
+  const currencies = useSelector((reduxState: any) => reduxState.wallet.currencies);
   const dispatch: any = useDispatch();
 
   useEffect(() => {
