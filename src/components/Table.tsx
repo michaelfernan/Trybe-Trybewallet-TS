@@ -6,9 +6,8 @@ function ExpenseTable() {
   const expenses = useSelector((state: GlobalState) => state.wallet.expenses);
   const dispatch = useDispatch();
 
-  const handleDelete = (id: number, convertedValue: number) => {
+  const handleDelete = (id: number) => {
     dispatch(deleteItem(id));
-    dispatch(updateTotalExpense(convertedValue));
   };
 
   return (
@@ -50,17 +49,11 @@ function ExpenseTable() {
                 <button>Editar</button>
                 <button
                   data-testid="delete-btn"
-                  onClick={ () => {
-                    handleDelete(
-                      expense.id,
-                      Number(
-                        expense.exchangeRates[expense.currency].ask,
-                      ) * Number(expense.value),
-                    );
-                  } }
+                  onClick={ () => handleDelete(expense.id) }
                 >
                   Excluir
                 </button>
+
               </td>
             </tr>
           );

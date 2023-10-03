@@ -1,5 +1,4 @@
 import { ExchangeRateInfo } from '../../Type';
-
 import {
   SAVE_CURRENCIES,
   ADD_EXPENSE,
@@ -17,6 +16,7 @@ interface Expense {
   tag: string;
   exchangeRates: ExchangeRateInfo;
 }
+
 interface WalletState {
   expenses: Expense[];
   totalExpenses: number;
@@ -80,27 +80,39 @@ function handleAddExpense(state: WalletState, action: {
   };
 }
 
+function handleDeleteExpense(state: WalletState, action: {
+  type: typeof DELETE_EXPENSES; payload: number }): WalletState {
+  const expenseToDelete = state.expenses.find((expense) => expense.id === action.payload);
+
+  let valueToSubtract = 0;
+  if (expenseToDelete) {
+    const value = expenseToDelete
+      .exchangeRates[expenseToDelete.currency] as unknown as ExchangeRateInfo;
+    valueToSubtract = parseFloat(expenseToDelete.value) * parseFloat(value.ask);
+  }
+
+  const newExpenses = state.expenses.filter((expense) => expense.id !== action.payload);
+
+  return {
+    ...state,
+    expenses: newExpenses,
+    totalExpenses: Math.max(0, state.totalExpenses - valueToSubtract),
+  };
+}
+
 function walletReducer(state = initialState, action: Action): WalletState {
   switch (action.type) {
     case SAVE_CURRENCIES:
       return handleSaveCurrencies(state, action);
     case ADD_EXPENSE:
       return handleAddExpense(state, action);
+    case DELETE_EXPENSES:
+      return handleDeleteExpense(state, action);
     case UPDATE_TOTAL_EXPENSE:
       return {
         ...state,
-        totalExpenses: state.totalExpenses - action.payload,
+        totalExpenses: Math.max(0, state.totalExpenses - action.payload),
       };
-    case DELETE_EXPENSES: {
-      const newExpenses = state.expenses.filter(
-        (expense) => expense.id !== action.payload,
-      );
-      return {
-        ...state,
-        expenses: newExpenses,
-        totalExpenses: state.totalExpenses,
-      };
-    }
     default:
       return state;
   }
