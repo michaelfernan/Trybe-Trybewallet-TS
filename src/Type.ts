@@ -10,13 +10,13 @@ export type Expense = {
 
 export type GlobalState = {
   user: {
-    email: '', // string que armazena o e-mail da pessoa usuária
+    email: '',
   }
   wallet: {
-    currencies: [], // array de string
-    expenses:[Expense], // array de objetos, com cada objeto tendo as chaves id, value, currency, method, tag, description e exchangeRates
-    editor: false, // valor booleano que indica se uma despesa está sendo editada
-    idToEdit: 0, // valor numérico que armazena o id da despesa que está sendo editada
+    currencies: [],
+    expenses:[Expense],
+    editor: false,
+    idToEdit: 0,
     totalExpenses: 0;
   },
 };
@@ -42,5 +42,13 @@ export type Currency = {
   code: string;
   name: string;
   ask: string;
-  [key: string]: any; // para cobrir as outras propriedades que não foram listadas
+  [key: string]: any; };
+
+export type WalletFormState = {
+  value: string;
+  currency: string;
+  method: string;
+  tag: string;
+  description: string;
+  availableCurrencies: string[];
 };

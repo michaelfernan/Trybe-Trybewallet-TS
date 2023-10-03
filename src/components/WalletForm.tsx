@@ -1,17 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addExpense as addExpenseAction, fetchAPIAndExchange } from '../redux/actions';
-import { ExchangeRateInfo } from '../Type'; // Ajuste o caminho para o arquivo onde esses tipos estão definidos
-
-
-interface WalletFormState {
-  value: string;
-  currency: string;
-  method: string;
-  tag: string;
-  description: string;
-  availableCurrencies: string[];
-}
+import { WalletFormState } from '../Type'; // Ajuste o caminho para o arquivo onde esses tipos estão definidos
 
 function WalletForm() {
   const [state, setState] = useState<WalletFormState>({
