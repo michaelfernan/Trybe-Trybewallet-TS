@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteItem, updateTotalExpense } from '../redux/actions';
+import { deleteItem } from '../redux/actions';
 import { GlobalState } from '../Type';
 
 function ExpenseTable() {
