@@ -33,9 +33,9 @@ function ExpenseTable() {
               <td>{expense.description}</td>
               <td>{expense.tag}</td>
               <td>{expense.method}</td>
-              <td>{`${expense.value} ${expense.currency}`}</td>
-              <td>Real Brasileiro</td>
-              <td>{`${expense.exchangeRates[expense.currency].ask} BRL`}</td>
+              <td>{`${parseFloat(expense.value).toFixed(2)} ${expense.currency}`}</td>
+              <td>{`${expense.exchangeRates[expense.currency].name}/Real Brasileiro`}</td>
+              <td>{`${parseFloat(expense.exchangeRates[expense.currency].ask).toFixed(2)} BRL`}</td>
 
               <td>
                 {`${(
