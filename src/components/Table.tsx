@@ -35,14 +35,16 @@ function ExpenseTable() {
               <td>{expense.method}</td>
               <td>{`${parseFloat(expense.value).toFixed(2)} ${expense.currency}`}</td>
               <td>{`${expense.exchangeRates[expense.currency].name}/Real Brasileiro`}</td>
-              <td>{`${parseFloat(expense.exchangeRates[expense.currency].ask).toFixed(2)} BRL`}</td>
-
               <td>
-                {`${(
-                  Number(expense.exchangeRates[expense.currency].ask)
-                  * Number(expense.value)).toFixed(2)} BRL`}
-              </td>
+                {`${parseFloat(expense.exchangeRates[
+                  expense.currency].ask).toFixed(2)} BRL`}
 
+              </td>
+              <td>
+                {`${(Number(expense.exchangeRates[
+                  expense.currency].ask) * Number(expense.value)).toFixed(2)} BRL`}
+
+              </td>
               <td>Real</td>
               <td>
                 <button>Editar</button>
@@ -51,14 +53,15 @@ function ExpenseTable() {
                   onClick={ () => {
                     handleDelete(
                       expense.id,
-                      Number(expense.exchangeRates) * Number(expense.value),
+                      Number(
+                        expense.exchangeRates[expense.currency].ask,
+                      ) * Number(expense.value),
                     );
                   } }
                 >
                   Excluir
                 </button>
               </td>
-
             </tr>
           );
         })}

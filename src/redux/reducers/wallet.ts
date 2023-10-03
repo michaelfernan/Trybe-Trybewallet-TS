@@ -68,9 +68,9 @@ function handleAddExpense(state: WalletState, action: {
     exchangeRates: action.payload.exchangeRates,
   };
 
-  const value = newExpense.exchangeRates[action.payload.currency] as ExchangeRateInfo;
-  const convertedValue =  parseFloat(action.payload.value) * parseFloat(value.ask);
-
+  const value = newExpense
+    .exchangeRates[action.payload.currency] as unknown as ExchangeRateInfo;
+  const convertedValue = parseFloat(action.payload.value) * parseFloat(value.ask);
 
   return {
     ...state,

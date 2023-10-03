@@ -5,7 +5,7 @@ export type Expense = {
   method: string;
   tag: string;
   description: string;
-  exchangeRates:ExchangeRateInfo;
+  exchangeRates: { [key: string]: Currency };
 };
 
 export type GlobalState = {
