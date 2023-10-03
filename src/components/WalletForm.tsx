@@ -14,7 +14,7 @@ function WalletForm() {
   });
 
   const currencies = useSelector((state: any) => state.wallet.currencies);
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAPIAndExchange());
