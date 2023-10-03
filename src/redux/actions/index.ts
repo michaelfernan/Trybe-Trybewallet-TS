@@ -13,12 +13,12 @@ export const SAVE_EDITED_EXPENSE = 'SAVE_EDITED_EXPENSE';
 export const UPDATE_TOTAL_EXPENSES = 'UPDATE_TOTAL_EXPENSES';
 export const UPDATE_TOTAL_EXPENSE = 'UPDATE_TOTAL_EXPENSE';
 
-interface AddCurrenciesAction {
+type AddCurrenciesAction = {
   type: typeof ADD_CURRENCIES;
   payload: string[];
-}
+};
 
-interface AddExpenseAction {
+type AddExpenseAction = {
   type: typeof ADD_EXPENSE;
   payload: {
     description: string;
@@ -28,18 +28,18 @@ interface AddExpenseAction {
     tag: string;
     exchangeRates: { [key: string]: Currency };
   };
-}
+};
 
-interface SaveCurrenciesAction {
+type SaveCurrenciesAction = {
   type: typeof SAVE_CURRENCIES;
   payload: string[];
-}
+};
 
-interface LoadExpensesAction {
+type LoadExpensesAction = {
   type: typeof SAVE_EXPENSES;
   payload: any;
   prices: any;
-}
+};
 
 type Action =
  AddCurrenciesAction

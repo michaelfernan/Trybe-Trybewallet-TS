@@ -7,7 +7,7 @@ import {
   UPDATE_TOTAL_EXPENSE,
 } from '../actions';
 
-interface Expense {
+type Expense = {
   id: number;
   description: string;
   value: string;
@@ -15,15 +15,15 @@ interface Expense {
   method: string;
   tag: string;
   exchangeRates: ExchangeRateInfo;
-}
+};
 
-interface WalletState {
+type WalletState = {
   expenses: Expense[];
   totalExpenses: number;
   currencies: string[];
   lastId: number;
   exchangeRates: ExchangeRateInfo;
-}
+};
 
 const initialState: WalletState = {
   expenses: [],
