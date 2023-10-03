@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { Currency } from '../../Type';
 
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
@@ -25,7 +26,7 @@ interface AddExpenseAction {
     currency: string;
     method: string;
     tag: string;
-    exchangeRate: number;
+    exchangeRates: { [key: string]: Currency };
   };
 }
 
@@ -61,7 +62,7 @@ export const addExpense = (expenseData: {
   currency: string;
   method: string;
   tag: string;
-  exchangeRate: number;
+  exchangeRates: { [key: string]: Currency };
 }) => ({
   type: ADD_EXPENSE,
   payload: expenseData,
