@@ -1,3 +1,5 @@
+import { ExchangeRateInfo } from '../../Type';
+
 import {
   SAVE_CURRENCIES,
   ADD_EXPENSE,
@@ -9,27 +11,38 @@ import {
 interface Expense {
   id: number;
   description: string;
-  value: number;
+  value: string;
   currency: string;
   method: string;
   tag: string;
-  exchangeRates:number;
+  exchangeRates: ExchangeRateInfo;
 }
-
 interface WalletState {
   expenses: Expense[];
   totalExpenses: number;
   currencies: string[];
   lastId: number;
-  exchangeRates:number;
+  exchangeRates: ExchangeRateInfo;
 }
 
 const initialState: WalletState = {
   expenses: [],
   totalExpenses: 0,
   currencies: [],
-  lastId: 0,
-  exchangeRates: 0,
+  lastId: -1,
+  exchangeRates: {
+    code: '',
+    codein: '',
+    name: '',
+    high: '',
+    low: '',
+    varBid: '',
+    pctChange: '',
+    bid: '',
+    ask: '',
+    timestamp: '',
+    create_date: '',
+  },
 };
 
 type Action =
@@ -49,21 +62,20 @@ function handleSaveCurrencies(state: WalletState, action: {
 
 function handleAddExpense(state: WalletState, action: {
   type: typeof ADD_EXPENSE; payload: Omit<Expense, 'id'> }): WalletState {
-  console.log('oii bebeee me pede pra fazerrr');
-  console.log(action.payload);
-
   const newExpense: Expense = {
     id: state.lastId + 1,
     ...action.payload,
-    exchangeRates: action.payload.exchangeRates, // Apenas a taxa de câmbio
+    exchangeRates: action.payload.exchangeRates,
   };
 
-  const convertedValue = action.payload.value * action.payload.exchangeRates; // Valor convertido
+  const value = newExpense.exchangeRates[action.payload.currency] as ExchangeRateInfo;
+  const convertedValue =  parseFloat(action.payload.value) * parseFloat(value.ask);
+
 
   return {
     ...state,
     expenses: [...state.expenses, newExpense],
-    totalExpenses: state.totalExpenses + convertedValue,
+    totalExpenses: (state.totalExpenses + convertedValue),
     lastId: state.lastId + 1,
   };
 }

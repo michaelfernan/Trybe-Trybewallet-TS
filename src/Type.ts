@@ -1,48 +1,41 @@
-export type UserState = {
-  email: string;
-};
-
 export type Expense = {
   id: number;
   value: string;
-  description: string;
   currency: string;
   method: string;
   tag: string;
-  exchangeRates: Record<string, ExchangeRateInfo>;
-};
-
-export type RootState = {
-  user: {
-    email: string;
-  };
-  wallet: {
-    totalExpenses: any;
-    expenses: Expense[];
-  };
-  totalExpense: 0;
-
+  description: string;
+  exchangeRates:ExchangeRateInfo;
 };
 
 export type GlobalState = {
-  user: UserState;
-  wallet: WalletState;
+  user: {
+    email: '', // string que armazena o e-mail da pessoa usuária
+  }
+  wallet: {
+    currencies: [], // array de string
+    expenses:[Expense], // array de objetos, com cada objeto tendo as chaves id, value, currency, method, tag, description e exchangeRates
+    editor: false, // valor booleano que indica se uma despesa está sendo editada
+    idToEdit: 0, // valor numérico que armazena o id da despesa que está sendo editada
+    totalExpenses: 0;
+  },
 };
 
 export type ExchangeRateInfo = {
-  ask: number;
-  code: string;
-  name: string;
-  bid: number;
-  // outras propriedades relevantes
-};
 
-export type WalletState = {
-  currencies: [];
-  expenses: Expense[];
-  editor: boolean;
-  idToEdit: number;
-  // Adicione as propriedades que faltam
+  code: string;
+  codein: string;
+  name: string;
+  high: string;
+  low: string;
+  varBid: string;
+  pctChange: string;
+  bid: string;
+  ask: string;
+  timestamp: string;
+  create_date: string;
+  [key: string]: string;
+
 };
 
 export type Currency = {

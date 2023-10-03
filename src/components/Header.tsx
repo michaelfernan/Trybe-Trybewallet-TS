@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../Type';
+import { GlobalState } from '../Type';
 
 function Header() {
-  const userEmail = useSelector((state: RootState) => state.user.email);
-  const totalExpenses = useSelector((state: RootState) => state.wallet.totalExpenses);
+  const userEmail = useSelector((state: GlobalState) => state.user.email);
+  const totalExpenses = useSelector((state: GlobalState) => state.wallet.totalExpenses);
 
   return (
     <header>

@@ -1,26 +1,28 @@
 import React, { Component, ChangeEvent, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import { addExpense as addExpenseAction, fetchAPIAndExchange } from '../redux/actions';
+import { ExchangeRateInfo } from '../Type'; // Ajuste o caminho para o arquivo onde esses tipos estão definidos
 
 interface WalletFormProps {
   addExpense: (expenseData: {
-    description: string;
-    value: number;
+    value: string;
     currency: string;
     method: string;
     tag: string;
-    exchangeRates: Record<string, any>;
+    description: string;
+    exchangeRates: ExchangeRateInfo;
   }) => void;
 
   fetchCurrencies: () => Promise<void>;
 }
 
 interface WalletFormState {
-  description: string;
+
   value: string;
   currency: string;
   method: string;
   tag: string;
+  description: string;
   availableCurrencies: string[];
 }
 
@@ -28,11 +30,12 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
   constructor(props: WalletFormProps) {
     super(props);
     this.state = {
-      description: '',
+
       value: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      description: '',
       availableCurrencies: [],
     };
   }
@@ -61,23 +64,14 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
 
     const response = await fetch('https://economia.awesomeapi.com.br/json/all');
     const data = await response.json();
-    const exchangeRates = data[currency]?.ask || 1;
-
-    console.log('Despesa adicionada:', {
-      description,
-      value: parseFloat(value),
-      currency,
-      method,
-      tag,
-      exchangeRates,
-    });
+    const exchangeRates = data;
 
     addExpense({
-      description,
-      value: parseFloat(value),
+      value,
       currency,
       method,
       tag,
+      description,
       exchangeRates,
     });
 
@@ -104,21 +98,12 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
   }
 
   render() {
-    const { description, value, currency, method, tag, availableCurrencies } = this.state;
+    const { value, currency, method, tag, description, availableCurrencies } = this.state;
 
     return (
       <div>
         <form onSubmit={ this.handleAddExpense }>
-          <label>
-            Descrição:
-            <input
-              type="text"
-              name="description"
-              value={ description }
-              onChange={ this.handleInputChange }
-              data-testid="description-input"
-            />
-          </label>
+
           <label>
             Valor:
             <input
@@ -171,6 +156,16 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
               <option value="Transporte">Transporte</option>
               <option value="Saúde">Saúde</option>
             </select>
+          </label>
+          <label>
+            Descrição:
+            <input
+              type="text"
+              name="description"
+              value={ description }
+              onChange={ this.handleInputChange }
+              data-testid="description-input"
+            />
           </label>
           <button type="submit" data-testid="add-expense-button">
             Adicionar despesa
