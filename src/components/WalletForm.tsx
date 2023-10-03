@@ -12,7 +12,7 @@ interface WalletFormProps {
     description: string;
     exchangeRates: ExchangeRateInfo;
   }) => void;
-
+  currencies: any[];
   fetchCurrencies: () => Promise<void>;
 }
 
@@ -41,11 +41,31 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
   }
 
   async componentDidMount() {
-    const { fetchCurrencies } = this.props;
+    const { fetchCurrencies, currencies } = this.props;
+    console.log(currencies);
+    const data = currencies;
     fetchCurrencies();
+    console.log(currencies);
 
-    await this.fetchExchangeRates();
+    this.setState({
+      availableCurrencies: Object.keys(data).filter((c) => c !== 'USDT'),
+    });
   }
+
+  componentDidUpdate(prevProps) {
+    const { currencies } = this.props;
+
+    // Verifique se currencies foi atualizado
+    if (currencies !== prevProps.currencies) {
+      console.log(currencies);
+
+      this.setState({
+        availableCurrencies: currencies,
+      });
+    }
+  }
+
+  s;
 
   handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -83,12 +103,6 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
 
   async fetchExchangeRates() {
     try {
-      const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-      if (!response.ok) {
-        throw new Error('Não foi possível buscar as moedas.');
-      }
-      const data = await response.json();
-
       this.setState({
         availableCurrencies: Object.keys(data).filter((c) => c !== 'USDT'),
       });
@@ -178,7 +192,8 @@ class WalletForm extends Component<WalletFormProps, WalletFormState> {
 
 const mapStateToProps = (state: any) => {
   return {
-    expenses: state.expenses, // Substitua "state.expenses" pela chave adequada em seu estado Redux
+    expenses: state.expenses,
+    currencies: state.wallet.currencies,
   };
 };
 
